@@ -1,29 +1,40 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, Button } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 
 import colors from "../../constants/colors";
 
 const ProductItem = (props) => {
   return (
     <View style={styles.product}>
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: props.image }} />
-      </View>
-      <View style={styles.details}>
-        <Text style={styles.title}>{props.title}</Text>
-        <Text style={styles.price}>${props.price.toFixed(2)}</Text>
-      </View>
-      <View style={styles.actions}>
-        <Button
-          color={colors.second}
-          title="View Details"
-          onPress={props.onViewDetail}
-        />
-        <Button
-          color={colors.third}
-          title="to Cart"
-          onPress={props.onAddToCart}
-        />
+      <View style={styles.touchable}>
+        <TouchableOpacity onPress={props.onViewDetail}>
+          <View style={styles.imageContainer}>
+            <Image style={styles.image} source={{ uri: props.image }} />
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.title}>{props.title}</Text>
+            <Text style={styles.price}>${props.price.toFixed(2)}</Text>
+          </View>
+          <View style={styles.actions}>
+            <Button
+              color={colors.second}
+              title="View Details"
+              onPress={props.onViewDetail}
+            />
+            <Button
+              color={colors.third}
+              title="to Cart"
+              onPress={props.onAddToCart}
+            />
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -42,6 +53,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: 300,
     margin: 20,
+  },
+  touchable: {
+    borderRadius: 10,
+    overflow: "hidden",
   },
   imageContainer: {
     width: "100%",
@@ -62,10 +77,12 @@ const styles = StyleSheet.create({
   },
 
   title: {
+    fontFamily: "open-sens-bold",
     fontSize: 18,
-    marginVertical: 4,
+    marginVertical: 2,
   },
   price: {
+    fontFamily: "open-sens",
     fontSize: 14,
     color: colors.third,
   },
