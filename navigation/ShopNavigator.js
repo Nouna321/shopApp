@@ -1,7 +1,9 @@
 import React from "react";
-import { createAppContainer } from "react-navigation";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { createDrawerNavigator } from "react-navigation-drawer";
+import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
+import { SafeAreaView, Button, View } from "react-native";
+import { useDispatch } from "react-redux";
 
 import ProductsOverViewScreen from "../screens/shop/ProductsOverView";
 import ProductDetailScreen from "../screens/shop/ProductDetail";
@@ -9,6 +11,10 @@ import CartScreen from "../screens/shop/Cart";
 import OrdersScreen from "../screens/shop/Orders";
 import UserProductsScreen from "../screens/user/UserProducts";
 import EditProductScreen from "../screens/user/EditProduct";
+import AuthScreen from "../screens/user/Auth";
+import StartUpScreen from "../screens/StartUp";
+
+import * as authActions from "../store/actions/auth";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -93,7 +99,48 @@ const ShopNavigator = createDrawerNavigator(
     contentOptions: {
       activeTintColor: colors.first,
     },
+    contentComponent: (props) => {
+      const dispatch = useDispatch();
+      return (
+        <View style={{ flex: 1, paddingTop: 20 }}>
+          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
+            <DrawerItems {...props} />
+            <Button
+              title="Logout"
+              color={colors.first}
+              onPress={() => {
+                dispatch(authActions.logout());
+                //props.navigation.navigate("Auth");
+              }}
+            />
+          </SafeAreaView>
+        </View>
+      );
+    },
   }
 );
 
-export default createAppContainer(ShopNavigator);
+const AuthNavigator = createStackNavigator(
+  {
+    Auth: AuthScreen,
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: "white",
+      },
+      headerTitleStyle: {
+        fontFamily: "open-sens",
+      },
+      headerTintColor: colors.first,
+    },
+  }
+);
+
+const MainNavigator = createSwitchNavigator({
+  StartUp: StartUpScreen,
+  Auth: AuthNavigator,
+  Shop: ShopNavigator,
+});
+
+export default createAppContainer(MainNavigator);

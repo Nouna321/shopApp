@@ -71,7 +71,7 @@ const EditProduct = (props) => {
     if (error) {
       Alert.alert("An error occurred", error, [{ text: "Okay" }]);
     }
-  }, [dispatch, loadProducts]);
+  }, [error]);
 
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
